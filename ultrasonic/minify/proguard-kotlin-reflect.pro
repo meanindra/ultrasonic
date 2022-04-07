@@ -1,7 +1,7 @@
 -keep class kotlin.Metadata { *; }
 -keep class kotlin.reflect.** { *; }
 
--keepclassmembers public class com.company[obfuscated].domain.api.models.** {
+-keepclassmembers public class org.moire.ultrasonic.domain.api.models.** {
     public synthetic <methods>;
 }
 
