@@ -299,7 +299,11 @@ class DownloadFile(
                         )
                     }
 
-                    track.cacheMetadata()
+                    try {
+                        track.cacheMetadata()
+                    } catch (ignore: Exception) {
+                        Timber.w(ignore)
+                    }
 
                     downloadAndSaveCoverArt()
                 }
@@ -349,7 +353,7 @@ class DownloadFile(
             val onlineDB = activeServerProvider.getActiveMetaDatabase()
             val offlineDB = activeServerProvider.offlineMetaDatabase
 
-            var artist: Artist? = onlineDB.artistsDao().get(artistId!!)
+            var artist: Artist? = onlineDB.artistDao().get(artistId!!)
 
             // If we are downloading a new album, and the user has not visited the Artists list
             // recently, then the artist won't be in the database.
@@ -362,7 +366,7 @@ class DownloadFile(
 
             // If we have found an artist, cache it.
             if (artist != null) {
-                offlineDB.artistsDao().insert(artist)
+                offlineDB.artistDao().insert(artist)
             }
 
             // Now cache the album
@@ -376,7 +380,7 @@ class DownloadFile(
             }
 
             // Now cache the track data
-            // offlineDB.tracksDao().insert(song)
+            offlineDB.trackDao().insert(this)
         }
 
         private fun downloadAndSaveCoverArt() {

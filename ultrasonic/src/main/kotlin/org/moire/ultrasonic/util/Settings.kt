@@ -196,6 +196,9 @@ object Settings {
     var shouldUseId3Tags by BooleanSetting(Constants.PREFERENCES_KEY_ID3_TAGS, false)
 
     @JvmStatic
+    var useId3TagsOffline by BooleanSetting(Constants.PREFERENCES_KEY_ID3_TAGS_OFFLINE, false)
+
+    @JvmStatic
     var tempLoss by StringIntSetting(Constants.PREFERENCES_KEY_TEMP_LOSS, "1")
 
     var activeServer by IntSetting(Constants.PREFERENCES_KEY_SERVER_INSTANCE, -1)
@@ -314,8 +317,6 @@ object Settings {
     val overrideLanguage by StringSetting(Constants.PREFERENCES_KEY_OVERRIDE_LANGUAGE, "")
 
     var useFiveStarRating by BooleanSetting(Constants.PREFERENCES_KEY_USE_FIVE_STAR_RATING, false)
-
-    var useId3TagsOffline = true
 
     // TODO: Remove in December 2022
     fun migrateFeatureStorage() {

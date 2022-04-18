@@ -92,6 +92,7 @@ object Constants {
     const val PREFERENCES_KEY_INCREMENT_TIME = "incrementTime"
     const val PREFERENCES_KEY_SHOW_NOW_PLAYING_DETAILS = "showNowPlayingDetails"
     const val PREFERENCES_KEY_ID3_TAGS = "useId3Tags"
+    const val PREFERENCES_KEY_ID3_TAGS_OFFLINE = "useId3TagsOffline"
     const val PREFERENCES_KEY_SHOW_ARTIST_PICTURE = "showArtistPicture"
     const val PREFERENCES_KEY_TEMP_LOSS = "tempLoss"
     const val PREFERENCES_KEY_CHAT_REFRESH_INTERVAL = "chatRefreshInterval"
