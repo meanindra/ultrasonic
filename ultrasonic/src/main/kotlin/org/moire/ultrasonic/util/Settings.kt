@@ -14,7 +14,6 @@ import androidx.preference.PreferenceManager
 import java.util.regex.Pattern
 import org.moire.ultrasonic.R
 import org.moire.ultrasonic.app.UApp
-import org.moire.ultrasonic.data.ActiveServerProvider
 import org.moire.ultrasonic.domain.RepeatMode
 
 /**
@@ -194,8 +193,7 @@ object Settings {
         by BooleanSetting(Constants.PREFERENCES_KEY_SHOW_NOW_PLAYING_DETAILS, false)
 
     @JvmStatic
-    var shouldUseId3Tags
-        by BooleanSetting(Constants.PREFERENCES_KEY_ID3_TAGS, false)
+    var shouldUseId3Tags by BooleanSetting(Constants.PREFERENCES_KEY_ID3_TAGS, false)
 
     @JvmStatic
     var tempLoss by StringIntSetting(Constants.PREFERENCES_KEY_TEMP_LOSS, "1")
@@ -206,15 +204,8 @@ object Settings {
 
     var firstRunExecuted by BooleanSetting(Constants.PREFERENCES_KEY_FIRST_RUN_EXECUTED, false)
 
-    val shouldShowArtistPicture: Boolean
-        get() {
-            val preferences = preferences
-            val isOffline = ActiveServerProvider.isOffline()
-            val isId3Enabled = preferences.getBoolean(Constants.PREFERENCES_KEY_ID3_TAGS, false)
-            val shouldShowArtistPicture =
-                preferences.getBoolean(Constants.PREFERENCES_KEY_SHOW_ARTIST_PICTURE, false)
-            return !isOffline && isId3Enabled && shouldShowArtistPicture
-        }
+    val shouldShowArtistPicture
+        by BooleanSetting(Constants.PREFERENCES_KEY_SHOW_ARTIST_PICTURE, false)
 
     @JvmStatic
     var chatRefreshInterval by StringIntSetting(
@@ -323,6 +314,8 @@ object Settings {
     val overrideLanguage by StringSetting(Constants.PREFERENCES_KEY_OVERRIDE_LANGUAGE, "")
 
     var useFiveStarRating by BooleanSetting(Constants.PREFERENCES_KEY_USE_FIVE_STAR_RATING, false)
+
+    var useId3TagsOffline = true
 
     // TODO: Remove in December 2022
     fun migrateFeatureStorage() {

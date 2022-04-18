@@ -299,9 +299,7 @@ class DownloadFile(
                         )
                     }
 
-                    if (track.artistId != null) {
-                        cacheMetadata(track.artistId!!)
-                    }
+                    track.cacheMetadata()
 
                     downloadAndSaveCoverArt()
                 }
@@ -345,13 +343,13 @@ class DownloadFile(
             return String.format(Locale.ROOT, "DownloadTask (%s)", track)
         }
 
-        private fun cacheMetadata(artistId: String) {
-            // TODO: Right now it's caching the track artist.
-            // Once the albums are cached in db, we should retrieve the album,
-            // and then cache the album artist.
-            if (artistId.isEmpty()) return
-            var artist: Artist? =
-                activeServerProvider.getActiveMetaDatabase().artistsDao().get(artistId)
+        private fun Track.cacheMetadata() {
+            if (artistId.isNullOrEmpty()) return
+
+            val onlineDB = activeServerProvider.getActiveMetaDatabase()
+            val offlineDB = activeServerProvider.offlineMetaDatabase
+
+            var artist: Artist? = onlineDB.artistsDao().get(artistId!!)
 
             // If we are downloading a new album, and the user has not visited the Artists list
             // recently, then the artist won't be in the database.
@@ -362,10 +360,23 @@ class DownloadFile(
                 }
             }
 
-            // If we have found an artist, catch it.
+            // If we have found an artist, cache it.
             if (artist != null) {
-                activeServerProvider.offlineMetaDatabase.artistsDao().insert(artist)
+                offlineDB.artistsDao().insert(artist)
             }
+
+            // Now cache the album
+            if (albumId?.isNotEmpty() == true) {
+                val albums = musicService.getAlbumsOfArtist(artistId!!, null, false)
+                val album = albums.find { it.id == albumId }
+
+                if (album != null) {
+                    offlineDB.albumDao().insert(album)
+                }
+            }
+
+            // Now cache the track data
+            // offlineDB.tracksDao().insert(song)
         }
 
         private fun downloadAndSaveCoverArt() {

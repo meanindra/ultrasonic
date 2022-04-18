@@ -483,7 +483,7 @@ class AutoMediaBrowserService : MediaBrowserServiceCompat() {
         result.detach()
         serviceScope.launch {
             val albums = if (!isOffline && useId3Tags) {
-                callWithErrorHandling { musicService.getArtist(id, name, false) }
+                callWithErrorHandling { musicService.getAlbumsOfArtist(id, name, false) }
             } else {
                 callWithErrorHandling {
                     musicService.getMusicDirectory(id, name, false).getAlbums()
